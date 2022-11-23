@@ -1,52 +1,53 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
 #include <Windows.h>
 
 using namespace std;
 
 class Test
 {
-    int a;
+    int amoundRightAnswers; // amount_right_answers amoundRightAnswers 
 public:
-    Test() { a = 0; }
-    int Getcount();
+    Test() { amoundRightAnswers = 0; }
+    int getcount();
     void calculation();
 };
 
-int Test::Getcount()
+int Test::getcount()
 {
-    return a++;
+    return amoundRightAnswers++;
 }
 
 void Test::calculation()
 {
-        int x;
-        int y;
-        int z;
+    int randvalue1;
+    int randvalue2;
+    int yourvalue;
 
-        for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "\nÐ—Ð°Ð²Ð´Ð°Ð½Ð½Ñ #" << i + 1 << endl;
+
+        srand(i * time(NULL));
+        randvalue1 = rand() % 10;
+        randvalue2 = rand() % 10;
+
+        cout << "\t" << randvalue1 << " * " << randvalue2 << " = ";
+        cin >> yourvalue;
+
+        if (yourvalue == randvalue1 * randvalue2)
         {
-            cout << "\nÇàâäàííÿ #"<<i+1 << endl;
+            cout << "Ð’Ñ–Ð´Ð¿Ð¾Ð²Ñ–Ð´ÑŒ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð°" << endl;
+            cout << "=====================================" << endl;
+            getcount();
+        }
+        else {
+            cout << "Ð’Ñ–Ð´Ð¿Ð¾Ð²Ñ–Ð´ÑŒ Ð½Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð°" << endl;
+            cout << "=====================================" << endl;
+        }
 
-            srand(i * time(NULL));
-            x = rand() % 10;
-            y = rand() % 10;
-           
-            cout  <<"\t" << x << " * " << y << " = ";
-            cin >> z;
-
-            if (z == x * y)
-            {
-                cout << "Â³äïîâ³òäü ïðàâèëüíà" << endl;
-                cout << "=====================================" << endl;
-                Getcount();
-            }
-            else {
-                cout << "Â³äïîâ³òäü íåïðàâèëüíà" << endl;
-                cout << "=====================================" << endl;
-            }
-        
     }
 }
 
@@ -54,56 +55,59 @@ int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
- 
-    cout << "===Òåñò íà çíàííÿ òàáëèö³ ìíîæåííÿ==="<<endl;
-    cout<<endl;
+
+    cout << "===Ð¢ÐµÑÑ‚ Ð½Ð° Ð·Ð½Ð°Ð½Ð½Ñ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ– Ð¼Ð½Ð¾Ð¶ÐµÐ½Ð½Ñ===" << endl;
+    cout << endl;
 
     ofstream file;
     string namfile = "Result.tx";
-    file.exceptions(ofstream::failbit);
 
     ifstream ofile;
     string fil;
-    
-    string name;
-    cout << "\tÂâåä³òü ³ì'ÿ : " ;
-    cin >> name;
-   
-    Test a;
-    a.calculation();
 
-    file.open(namfile);
-       
-        if (file.is_open())
-        {
-            file << name << " -> â³ðíî " << a.Getcount() << " ç 10.";
-        }
-        else
-        {  
-            cout << "Ïîìèëêà!!!";
-        }
+    string name;
+    cout << "\tÐ’Ð²ÐµÐ´Ñ–Ñ‚ÑŒ Ñ–Ð¼'Ñ : ";
+    cin >> name;
+
+    Test objtest;
+    objtest.calculation();
+
+    file.open(namfile, ofstream::app);
+
+    if (file.is_open())
+    {
+        file <<"\n" << name << " -> Ð²Ñ–Ñ€Ð½Ð¾ " << objtest.getcount() << " Ð· 10." << endl;
+    }
+    else
+    {
+        cout << "ÐŸÐ¾Ð¼Ð¸Ð»ÐºÐ°!!!";
+    }
 
     file.close();
-  
+
+    
+    
     ofile.open(namfile);
 
     if (ofile.is_open())
     {
-        cout << "\n===========Ðåçóëüòàò òåñòó==========="<<endl;
+        cout << "\n===========Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ñ‚ÐµÑÑ‚Ñƒ===========" << endl;
         while (!ofile.eof())
         {
-            fil = "";
+           
+            cout << endl;
+
             getline(ofile, fil);
             cout << fil;
+
         }
         cout << endl;
     }
     else
     {
-        cout << "Ïîìèëêà!!!";
+        cout << "ÐŸÐ¾Ð¼Ð¸Ð»ÐºÐ°!!!";
     }
 
     ofile.close();
-    
-}
 
+}
